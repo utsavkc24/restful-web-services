@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.in28minutes.rest.webservices.restfulwebservices.user.exception.UserNotFoundException;
+
 @RestController
 public class UserResource {
 
@@ -24,7 +26,11 @@ public class UserResource {
 	}
 	@GetMapping("/users/{id}")
 	public User retrieveUser(@PathVariable int id) {
-		return service.findOne(id);
+		User user = service.findOne(id);
+		if(user == null) 
+			throw new UserNotFoundException("id-"+id);
+		
+		return user;
 	}
 	@PostMapping("/users")
 	public ResponseEntity<Object> addUser(@RequestBody User user) {
