@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,9 +23,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-
 import com.in28minutes.rest.webservices.restfulwebservices.user.exception.UserNotFoundException;
 
 @RestController
@@ -31,8 +31,7 @@ public class UserResource {
 	@Autowired
 	private UserDaoService service;
 	
-	@Autowired
-	private ResourceBundleMessageSource resourceBundleMessageSource;
+
 
 	@GetMapping("/users")
 	public List<User> retrieveAllUser() {
@@ -69,8 +68,5 @@ public class UserResource {
 		if (user == null)
 			throw new UserNotFoundException("id -" + id);
 	}
-	@GetMapping(path = "/hello-world-internationalized")
-	public String helloWorldInternationalized(@RequestHeader(name = "Accept-Language", required = false) Locale locale) {
-		return resourceBundleMessageSource.getMessage("good.morning.message", null, locale);
-	}
+
 }
