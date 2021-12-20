@@ -49,13 +49,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-hateoas</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-xml</artifactId>
-			<version>2.13.0</version>
-		</dependency>
-
+    <dependency>
+    	<groupId>io.springfox</groupId>
+    	<artifactId>springfox-boot-starter</artifactId>
+    	<version>3.0.0</version>
+    </dependency>
 	</dependencies>
 
 	<build>
