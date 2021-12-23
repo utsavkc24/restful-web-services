@@ -19,26 +19,32 @@ public class FilteringController {
 	public MappingJacksonValue retrieveSomeBean() {
 		SomeBean someBean = new SomeBean("value1", "value2", "value3");
 
-		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("field1" , "field2");
-		FilterProvider filters = new SimpleFilterProvider().addFilter("SomeBeanFilter", filter);
-
-		MappingJacksonValue mapping = new MappingJacksonValue(someBean);
-		mapping.setFilters(filters);
-
-		return mapping;
+		return extractedMappingJacksonValue(null, someBean, SimpleBeanPropertyFilter.filterOutAllExcept("field1", "field2"));
 	}
 
 	// field2, field3
 	@GetMapping("/filtering-list")
 	public MappingJacksonValue retrieveListOfSomeBean() {
-		List<SomeBean> list = Arrays.asList(new SomeBean("value1", "value2", "value3"), new SomeBean("value11", "value22", "value33"));
-		
-		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("field3" , "field2");
-		FilterProvider filters = new SimpleFilterProvider().addFilter("SomeBeanFilter", filter);
+		List<SomeBean> list = Arrays.asList(new SomeBean("value1", "value2", "value3"),
+				new SomeBean("value11", "value22", "value33"));
 
-		MappingJacksonValue mapping = new MappingJacksonValue(list);
-		mapping.setFilters(filters);
-		
+		return extractedMappingJacksonValue(null, list,
+				SimpleBeanPropertyFilter.filterOutAllExcept("field3", "field2"));
+	}
+
+	private MappingJacksonValue extractedMappingJacksonValue(List<SomeBean> list, Object ob,
+			SimpleBeanPropertyFilter filter) {
+		MappingJacksonValue mapping = null;
+		if (ob != null) {
+			mapping = new MappingJacksonValue(ob);
+		} else {
+			mapping = new MappingJacksonValue(list);
+		}
+		mapping.setFilters(extractedFilters(filter));
 		return mapping;
+	}
+
+	private FilterProvider extractedFilters(SimpleBeanPropertyFilter filter) {
+		return new SimpleFilterProvider().addFilter("SomeBeanFilter", filter);
 	}
 }
