@@ -24,15 +24,10 @@ import com.in28minutes.rest.webservices.restfulwebservices.user.exception.UserNo
 
 @RestController
 public class UserJPAResource {
-
-	@Autowired
-	private UserDaoService service;
 	
 	@Autowired
 	private UserRepository userRepository;
 	
-
-
 	@GetMapping("/jpa/users")
 	public List<User> retrieveAllUser() {
 		return userRepository.findAll();
@@ -56,7 +51,7 @@ public class UserJPAResource {
 
 	@PostMapping("/jpa/users")
 	public ResponseEntity<Object> addUser(@Validated @RequestBody User user) {
-		User savedUser = service.save(user);
+		User savedUser = userRepository.save(user);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedUser.getId())
 				.toUri();
@@ -66,9 +61,7 @@ public class UserJPAResource {
 
 	@DeleteMapping("/jpa/users/{id}")
 	public void deleteUser(@PathVariable int id) {
-		User user = service.deleteById(id);
-		if (user == null)
-			throw new UserNotFoundException("id -" + id);
+	   userRepository.deleteById(id);
 	}
 
 }
